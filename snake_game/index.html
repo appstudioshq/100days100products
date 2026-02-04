@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Snake Game - Nokia 3310 Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="nokia-screen">
+            <div class="header">
+                <span class="score-label">Score: <span id="score">0</span></span>
+                <span class="high-score-label">Best: <span id="highScore">0</span></span>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="gameCanvas" width="400" height="400"></canvas>
+                <div id="overlay" class="overlay">
+                    <h1 id="overlayTitle">SNAKE</h1>
+                    <p id="overlayMessage">Press Arrow Keys or Swipe to Start</p>
+                    <button id="startBtn" class="retro-btn">START</button>
+                </div>
+            </div>
+        </div>
+        <div class="controls-hint">
+            <p>Controls: Arrows / Swipe</p>
+            <p>Space: Pause</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
