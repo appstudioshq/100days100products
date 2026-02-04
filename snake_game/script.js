@@ -10,7 +10,7 @@ const startBtn = document.getElementById('startBtn');
 // Game Constants
 const TILE_SIZE = 20;
 const TILE_COUNT = canvas.width / TILE_SIZE;
-const GAME_SPEED = 100; // ms
+const BASE_SPEED = 100; // ms
 
 // Game State
 let score = 0;
@@ -20,6 +20,8 @@ let isPlaying = false;
 let isPaused = false;
 let touchStartX = 0;
 let touchStartY = 0;
+let currentSpeed = BASE_SPEED;
+let foodEatenCount = 0;
 
 class Snake {
     constructor() {
@@ -146,16 +148,33 @@ function gameLoop() {
     if (snake.body[0].x === food.position.x && snake.body[0].y === food.position.y) {
         snake.grow();
         score += 10;
+        foodEatenCount++;
         scoreElement.textContent = score;
         if (score > highScore) {
             highScore = score;
             highScoreElement.textContent = highScore;
             localStorage.setItem('snakeHighScore', highScore);
         }
+        
+        // Dynamic Speed Increase
+        if (foodEatenCount % 4 === 0) {
+            increaseSpeed();
+        }
+        
         food.respawn(snake);
     }
     
     draw();
+}
+
+function increaseSpeed() {
+    currentSpeed = currentSpeed / 1.008;
+    // Cap speed
+    if (currentSpeed < 30) currentSpeed = 30; 
+    
+    // Reset interval with new speed
+    clearInterval(gameInterval);
+    gameInterval = setInterval(gameLoop, currentSpeed);
 }
 
 function draw() {
@@ -182,18 +201,18 @@ function startGame() {
     isPlaying = true;
     isPaused = false;
     score = 0;
+    foodEatenCount = 0;
+    currentSpeed = BASE_SPEED;
     scoreElement.textContent = '0';
     overlay.classList.add('hidden');
     
     snake.reset();
-    
-    // Ensure food doesn't start on snake (rare but possible)
     food.respawn(snake);
     
     draw();
     
     clearInterval(gameInterval);
-    gameInterval = setInterval(gameLoop, GAME_SPEED);
+    gameInterval = setInterval(gameLoop, currentSpeed);
 }
 
 function togglePause() {
@@ -241,7 +260,7 @@ document.querySelectorAll('.num-btn').forEach(btn => {
 // Menu button acting as Start/Select
 const menuBtn = document.getElementById('btn-menu');
 const handleMenuAction = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent ghost clicks
     if (isPlaying) togglePause();
     else startGame();
 };
