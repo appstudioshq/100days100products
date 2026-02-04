@@ -2,76 +2,180 @@
     --nokia-bg: #c6f196;
     --nokia-fg: #2c3527;
     --nokia-dim: #accf84;
+    --phone-body: #3d5a80; /* Classic dark blue/greyish */
+    --phone-housing: #98c1d9;
+    --key-color: #e0e0e0;
+    --key-text: #333;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    touch-action: none; /* Prevent default touch actions like scrolling */
+    touch-action: manipulation; /* Allow clicks but prevent double-tap zoom */
 }
 
 body {
-    background-color: #f0f0f0;
+    background-color: #293241;
     font-family: 'VT323', monospace;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     color: var(--nokia-fg);
+    overflow: hidden; /* Prevent scrolling on mobile */
 }
 
 .game-container {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Phone Body */
+.nokia-phone-body {
+    background-color: var(--phone-body);
+    border-radius: 40px 40px 60px 60px; /* Nokia shape approx */
+    padding: 40px 20px 60px 20px;
+    box-shadow: 
+        inset 5px 5px 15px rgba(255,255,255,0.2),
+        inset -5px -5px 15px rgba(0,0,0,0.4),
+        10px 10px 30px rgba(0,0,0,0.5);
+    border: 8px solid #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 360px;
+    /* Scale down for small screens if needed */
+    transform-origin: center;
+}
+
+/* Screen adjustments */
 .nokia-screen {
     background-color: var(--nokia-bg);
-    border: 4px solid var(--nokia-fg);
-    border-radius: 5px;
-    padding: 5px;
-    width: 100%;
-    max-width: 420px;
+    border: 4px solid #555;
+    border-radius: 10px;
+    padding: 10px;
+    width: 250px; /* Fixed width for the phone screen look */
+    height: 200px; /* Fixed height */
     box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
-    padding: 0 5px 5px 5px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     border-bottom: 2px solid var(--nokia-fg);
-    margin-bottom: 5px;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
 }
 
 .canvas-wrapper {
     position: relative;
     border: 2px solid var(--nokia-dim);
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--nokia-bg);
 }
 
 canvas {
     display: block;
     width: 100%;
-    height: auto;
-    image-rendering: pixelated; /* Essential for retro look */
+    height: 100%;
+    image-rendering: pixelated;
 }
 
+.branding {
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #ccc;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+/* Keypad */
+.keypad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-keys {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.nav-btn {
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 50px;
+    box-shadow: 0 4px 0 #999;
+}
+
+.nav-btn.large {
+    height: 40px;
+    width: 80px;
+    background: #e0e0e0;
+    border-radius: 15px;
+    margin-top: -10px; /* Center giant button style */
+}
+
+.num-keys {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.num-btn {
+    width: 70px;
+    height: 45px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border: 1px solid #ccc;
+    border-radius: 15px 15px 25px 25px; /* Pill shape */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: var(--nokia-fg);
+    font-size: 1.2rem;
+    box-shadow: 0 3px 0 #999, 1px 1px 2px rgba(0,0,0,0.2);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.num-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #999;
+    background: #ddd;
+}
+
+/* Overlay */
 .overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+    top: 0;
+    left: 0;
     width: 100%;
-    background-color: rgba(198, 241, 150, 0.9); /* Translucent nokia bg */
-    padding: 20px 0;
-    display: flex; /* Flex to center content */
+    height: 100%;
+    background-color: rgba(198, 241, 150, 0.95);
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 .overlay.hidden {
@@ -79,14 +183,13 @@ canvas {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    letter-spacing: 5px;
 }
 
 p {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
 }
 
 .retro-btn {
@@ -94,27 +197,44 @@ p {
     border: 2px solid var(--nokia-fg);
     color: var(--nokia-fg);
     font-family: 'VT323', monospace;
-    font-size: 1.5rem;
-    padding: 5px 20px;
+    font-size: 1.2rem;
+    padding: 5px 15px;
     cursor: pointer;
     text-transform: uppercase;
 }
 
-.retro-btn:hover {
-    background-color: var(--nokia-fg);
-    color: var(--nokia-bg);
-}
-
 .controls-hint {
-    margin-top: 10px;
-    text-align: center;
+    margin-top: 20px;
     color: #888;
-    font-size: 1rem;
+    text-align: center;
 }
 
-.controls-hint p {
-    font-size: 1rem;
-    margin-bottom: 0;
+.Desktop-only {
+    display: block;
 }
 
-/* Scanline effect optional - keeps it simple for now */
+/* Logic Highlights for 2, 4, 6, 8 */
+.num-btn[data-key="2"],
+.num-btn[data-key="4"],
+.num-btn[data-key="6"],
+.num-btn[data-key="8"] {
+    position: relative;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    body {
+        /* On mobile, we might want to scale slightly if screen is tiny */
+        height: 100vh;
+        width: 100vw;
+    }
+    
+    .nokia-phone-body {
+        transform: scale(0.9); /* Scale down slightly to fit standard phones if needed */
+        margin: 0;
+    }
+    
+    .controls-hint.Desktop-only {
+        display: none;
+    }
+}

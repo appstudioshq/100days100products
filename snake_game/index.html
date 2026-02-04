@@ -11,22 +11,49 @@
 </head>
 <body>
     <div class="game-container">
-        <div class="nokia-screen">
-            <div class="header">
-                <span class="score-label">Score: <span id="score">0</span></span>
-                <span class="high-score-label">Best: <span id="highScore">0</span></span>
+        <div class="nokia-phone-body">
+            <div class="nokia-screen">
+                <div class="header">
+                    <span class="score-label">Score: <span id="score">0</span></span>
+                    <span class="high-score-label">Best: <span id="highScore">0</span></span>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="gameCanvas" width="400" height="400"></canvas>
+                    <div id="overlay" class="overlay">
+                        <h1 id="overlayTitle">SNAKE</h1>
+                        <p id="overlayMessage">Press Keys or 2/4/6/8</p>
+                        <button id="startBtn" class="retro-btn">START</button>
+                    </div>
+                </div>
             </div>
-            <div class="canvas-wrapper">
-                <canvas id="gameCanvas" width="400" height="400"></canvas>
-                <div id="overlay" class="overlay">
-                    <h1 id="overlayTitle">SNAKE</h1>
-                    <p id="overlayMessage">Press Arrow Keys or Swipe to Start</p>
-                    <button id="startBtn" class="retro-btn">START</button>
+            
+            <div class="branding">NOKIA</div>
+
+            <div class="keypad">
+                <div class="nav-keys">
+                    <button class="nav-btn" id="btn-blue"></button>
+                    <button class="nav-btn large" id="btn-menu"></button>
+                    <button class="nav-btn" id="btn-c"></button>
+                </div>
+                <div class="num-keys">
+                    <button class="num-btn" data-key="1">1</button>
+                    <button class="num-btn" data-key="2">2 abc</button>
+                    <button class="num-btn" data-key="3">3 def</button>
+                    <button class="num-btn" data-key="4">4 ghi</button>
+                    <button class="num-btn" data-key="5">5 jkl</button>
+                    <button class="num-btn" data-key="6">6 mno</button>
+                    <button class="num-btn" data-key="7">7 pqrs</button>
+                    <button class="num-btn" data-key="8">8 tuv</button>
+                    <button class="num-btn" data-key="9">9 wxyz</button>
+                    <button class="num-btn" data-key="*">*</button>
+                    <button class="num-btn" data-key="0">0</button>
+                    <button class="num-btn" data-key="#">#</button>
                 </div>
             </div>
         </div>
-        <div class="controls-hint">
-            <p>Controls: Arrows / Swipe</p>
+        
+        <div class="controls-hint Desktop-only">
+            <p>Controls: Arrows / Numpad 2,4,6,8</p>
             <p>Space: Pause</p>
         </div>
     </div>

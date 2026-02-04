@@ -222,56 +222,65 @@ draw();
 startBtn.addEventListener('click', startGame);
 
 window.addEventListener('keydown', (e) => {
-    switch(e.code) {
-        case 'ArrowUp':
-            if (isPlaying && !isPaused) snake.changeDirection(0, -1);
-            break;
-        case 'ArrowDown':
-            if (isPlaying && !isPaused) snake.changeDirection(0, 1);
-            break;
-        case 'ArrowLeft':
-            if (isPlaying && !isPaused) snake.changeDirection(-1, 0);
-            break;
-        case 'ArrowRight':
-            if (isPlaying && !isPaused) snake.changeDirection(1, 0);
-            break;
-        case 'Space':
-            if (isPlaying) togglePause();
-            else startGame();
-            break;
-    }
+    handleInput(e.key);
 });
 
-// Touch Handling
-document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-}, { passive: false });
+// Keypad Button Listeners
+document.querySelectorAll('.num-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        handleInput(btn.getAttribute('data-key'));
+    });
+    // Prevent double-tap zoom issues and feel more responsive
+    btn.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // prevents mouse emulation
+        handleInput(btn.getAttribute('data-key'));
+        btn.classList.add('active'); // Add active state if needed via JS or rely on :active
+    });
+});
 
-document.addEventListener('touchmove', (e) => {
-    e.preventDefault(); // Prevent scrolling while playing
-}, { passive: false });
+// Menu button acting as Start/Select
+const menuBtn = document.getElementById('btn-menu');
+const handleMenuAction = (e) => {
+    e.preventDefault();
+    if (isPlaying) togglePause();
+    else startGame();
+};
+menuBtn.addEventListener('click', handleMenuAction);
+menuBtn.addEventListener('touchstart', handleMenuAction);
 
-document.addEventListener('touchend', (e) => {
-    if (!isPlaying || isPaused) return;
-
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
+function handleInput(key) {
+    // Number keys for valid direction changes
+    // 2=UP, 8=DOWN, 4=LEFT, 6=RIGHT
     
-    const dx = touchEndX - touchStartX;
-    const dy = touchEndY - touchStartY;
-    
-    if (Math.abs(dx) > Math.abs(dy)) {
-        // Horizontal
-        if (Math.abs(dx) > 30) { // Threshold
-            if (dx > 0) snake.changeDirection(1, 0);
-            else snake.changeDirection(-1, 0);
-        }
-    } else {
-        // Vertical
-        if (Math.abs(dy) > 30) {
-            if (dy > 0) snake.changeDirection(0, 1);
-            else snake.changeDirection(0, -1);
+    // Also support Arrow keys for desktop fallback convenience
+    if (!isPlaying && (key === 'Enter' || key === ' ')) {
+        startGame();
+        return;
+    }
+
+    if (isPlaying) {
+        switch(key) {
+            case 'ArrowUp':
+            case '2':
+                if (!isPaused) snake.changeDirection(0, -1);
+                break;
+            case 'ArrowDown':
+            case '8':
+                if (!isPaused) snake.changeDirection(0, 1);
+                break;
+            case 'ArrowLeft':
+            case '4':
+                if (!isPaused) snake.changeDirection(-1, 0);
+                break;
+            case 'ArrowRight':
+            case '6':
+                if (!isPaused) snake.changeDirection(1, 0);
+                break;
+            case 'Space':
+            case ' ':
+            case '#': // Let '#' act as pause on keypad
+                togglePause();
+                break;
         }
     }
-});
+}
